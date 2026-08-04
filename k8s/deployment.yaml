@@ -25,4 +25,4 @@ spec:
         image: boxofpencil/todo-app:v1
 
         ports:
-        - containerPort:3000
+        - containerPort: 3000
