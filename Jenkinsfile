@@ -1,26 +1,20 @@
-pipeline
-{
+pipeline {
     agent any
 
-    enviroment
-    {
-        IMAGE="boxofpencil/todo-app:v1"
+    environment {
+        IMAGE = "boxofpencil/todo-app:v1"
     }
 
-    stages
-    {
-        stage('Build docker image')
-        {
-            steps
-            {
-                """
-                docker build -t $IMAGE .
-                """
+    stages {
+
+        stage('Build docker image') {
+            steps {
+                sh "docker build -t ${IMAGE} ."
             }
         }
-        stage('docker login')
-        {
-            steps { 
+
+        stage('Docker login and push') {
+            steps {
                 withCredentials([
                     usernamePassword(
                         credentialsId: 'dockerhub-creds',
@@ -31,21 +25,19 @@ pipeline
                     sh '''
                     echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 
-                    docker tag todo-app:v1 $DOCKER_USER/todo-app:v1
+                    docker tag $IMAGE $DOCKER_USER/todo-app:v1
 
                     docker push $DOCKER_USER/todo-app:v1
                     '''
                 }
             }
-
         }
+
         stage('Deploy Kubernetes') {
             steps {
-                sh """
-
+                sh '''
                 kubectl apply -f k8s/
-
-                """
+                '''
             }
         }
     }
