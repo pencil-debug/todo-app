@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE = "boxofpencil/todo-app:v1"
+        IMAGE = "boxofpencil/todo-app:v2"
     }
 
     stages {
@@ -25,9 +25,9 @@ pipeline {
                     sh '''
                     echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 
-                    docker tag $IMAGE $DOCKER_USER/todo-app:v1
+                    docker tag $IMAGE $DOCKER_USER/todo-app:v2
 
-                    docker push $DOCKER_USER/todo-app:v1
+                    docker push $DOCKER_USER/todo-app:v2
                     '''
                 }
             }

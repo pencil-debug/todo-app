@@ -22,7 +22,7 @@ spec:
       containers:
 
       - name: todo-container
-        image: boxofpencil/todo-app:v1
+        image: boxofpencil/todo-app:v2
 
         ports:
         - containerPort: 3000
